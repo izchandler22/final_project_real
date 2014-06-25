@@ -12,12 +12,12 @@ class Scrape
   end
     def scraping_results
 
+
       @soccerscores.css("div.col-xs-12.clear-grid div.mu.result").each do |day8|
 
         first_team = day8.children[0].children[2].children[0].children[1].children[0].children.text
         second_team = day8.children[0].children[2].children[1].children[1].children[0].children.text
         score_game = day8.children[0].children[2].children[2].children[0].children.children[2].text
-        binding.pry
       end
     end
 
