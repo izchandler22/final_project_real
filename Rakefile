@@ -1,15 +1,11 @@
-require 'nokogiri'
-require 'twilio-ruby'
-require 'open-uri'
-require 'texting.rb'
-require 'worldcup.rb'
+require './texting'
+require './worldcup'
 
-task :text
-  scraper = Scrape.new
-
-  text_for_izzy = Text.new
-  text_for_izzy.texting(+19176030345)
-  text_for_emma = Text.new
-  text_for_emma.texting(+19176289337)
-  
+task :text do
+  soccer = Scrape.new
+  scores = soccer.scraping_results
+  scores.each do |score|
+    message = Text.new
+    message.texting(+19176289337, score[0])
+  end
 end

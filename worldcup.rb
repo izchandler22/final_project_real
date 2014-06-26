@@ -1,46 +1,49 @@
 require 'nokogiri'
-require 'pry'
 require 'open-uri'
 
 class Scrape
-
+  attr_accessor :todays_games
 
   def initialize
-   
+   # binding.pry
    @soccerscores = Nokogiri::HTML(open('http://www.fifa.com/worldcup/matches/index.html'))
-
+   @todays_games
   end
+
     def scraping_results
-
-
-      @soccerscores.css("div.col-xs-12.clear-grid div.mu.result").each do |day8|
-
-        first_team = day8.children[0].children[2].children[0].children[1].children[0].children.text
-        second_team = day8.children[0].children[2].children[1].children[1].children[0].children.text
-        score_game = day8.children[0].children[2].children[2].children[0].children.children[2].text
+      @todays_games = []
+      @soccerscores.css("div.match-list-date").each do |date|
+        game_day = date.css(".h3-wrap")
+        todays_date = Time.now.strftime("%A %d %B")
+        if game_day == todays_date
+          home = date.css(".home .t-nText").text.strip
+          away = date.css(".away .t-nText").text.strip
+          score = date.css(".s .s-scoreText").text.strip
+          if score.include?(":")
+            @todays_games << "The game between #{home} and #{away} starts at #{score}."
+          else
+            @todays_games << "The score was #{home} #{score} #{away}."
+          end
+        end
       end
+      @todays_games
     end
 
   def scraping_games
     @soccerscores = Nokogiri::HTML(open('http://www.fifa.com/worldcup/matches/index.html'))
-    upcoming_games = {}
-        @soccerscores.css("div.col-xs-12.clear-grid div.mu.fixture").each do |upcoming|
-          binding.pry
-           if title = upcoming.children[0].children[2].children[0].children[1].children[0].children.text + " vs. " +  upcoming.children[0].children[2].children[1].children[1].children[0].children.text
-              puts upcoming.children[0].children[2].children[0].children[1].children[0].children.text + " vs. " +  upcoming.children[0].children[2].children[1].children[1].children[0].children.text
-            else
-              puts "These games have not been determined"
-            end
+    
+    @soccerscores.css("div.col-xs-12.clear-grid div.mu.fixture").each do |upcoming|
+      if upcoming.css(".home .t-nText").text.strip.include?("[") || upcoming.css(".away .t-nText").text.strip.include?("[")
+        "The scores of these games have not yet been determined"
+      else
+        # binding.pry
+        upcoming.children[0].children[2].children[0].children[1].children[0].children.text + " vs. " +  upcoming.children[0].children[2].children[1].children[1].children[0].children.text
+      end
 
-            upcoming_games[title] = {
-              :first_team_upcoming => upcoming.children[0].children[2].children[0].children[1].children[0].children.text,
-              :second_team_upcoming => upcoming.children[0].children[2].children[1].children[1].children[0].children.text,
-              :time_game => upcoming.children[0].children[2].children[2].children[0].children.children[2].text
-            }
-        end
-    upcoming_games
+    end
+        # upcoming_games
   end
-  binding.pry
+  # binding.pry
 end
 
 
@@ -139,3 +142,6 @@ end
 
 
 
+# test = Scrape.new
+# puts test.scraping_results
+# puts test.todays_games
