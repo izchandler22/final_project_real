@@ -1,6 +1,6 @@
 require './lib/texting'
 require './lib/worldcup'
-require 'pry'
+
 
 
 task :text do
