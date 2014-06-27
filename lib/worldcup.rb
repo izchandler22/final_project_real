@@ -1,4 +1,3 @@
-require 'nokogiri'
 require 'open-uri'
 
 class Scrape
@@ -12,9 +11,10 @@ class Scrape
 
     def scraping_results
       @todays_games = []
+
       @soccerscores.css("div.match-list-date").each do |date|
-        game_day = date.css(".h3-wrap")
-        todays_date = Time.now.strftime("%A %d %B")
+        game_day = date.css(".h3-wrap").text
+        todays_date = (Time.now + 60*1440).strftime("%A %d %B") #THIS IS TOMORROW RIGHT NOW AND WILL NEED TO BE FIXED
         if game_day == todays_date
           home = date.css(".home .t-nText").text.strip
           away = date.css(".away .t-nText").text.strip
@@ -28,22 +28,6 @@ class Scrape
       end
       @todays_games
     end
-
-  def scraping_games
-    @soccerscores = Nokogiri::HTML(open('http://www.fifa.com/worldcup/matches/index.html'))
-    
-    @soccerscores.css("div.col-xs-12.clear-grid div.mu.fixture").each do |upcoming|
-      if upcoming.css(".home .t-nText").text.strip.include?("[") || upcoming.css(".away .t-nText").text.strip.include?("[")
-        "The scores of these games have not yet been determined"
-      else
-        # binding.pry
-        upcoming.children[0].children[2].children[0].children[1].children[0].children.text + " vs. " +  upcoming.children[0].children[2].children[1].children[1].children[0].children.text
-      end
-
-    end
-        # upcoming_games
-  end
-  # binding.pry
 end
 
 
