@@ -1,5 +1,6 @@
 require_relative './worldcup'
 require 'twilio-ruby'
+require 'pry'
 
 class Text
 
@@ -7,13 +8,19 @@ class Text
     account_sid = 'ACe330ba04d082392df4cb3511dcb72cec'
     auth_token = '2008ea097713e401a16c54029058da82'
     scrape = Scrape.new
-    games = scrape.scraping_results[0]
+    @games = []
+    if scrape.scraping_results == []
+      @games << "There are no games today"
+    else 
+      @games << scrape.scraping_results[0]
+    end
+
     @client = Twilio::REST::Client.new(account_sid, auth_token)
     @recipient = recipient
     @client.account.messages.create(
       :from => '+18152642023',
       :to => recipient,
-      :body => games
+      :body => @games[0]
       )
 
   end
