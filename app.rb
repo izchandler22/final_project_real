@@ -2,7 +2,6 @@ require 'bundler' #require bundler
 Bundler.require #require everything in bundler in gemfile
 require './lib/texting'
 require './lib/worldcup'
-require 'pry'
 
 
 get '/' do
