@@ -1,6 +1,6 @@
 require_relative './worldcup'
 require 'twilio-ruby'
-require 'pry'
+
 
 class Text
 
