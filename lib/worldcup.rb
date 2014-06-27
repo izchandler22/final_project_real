@@ -15,7 +15,7 @@ class Scrape
 
       @soccerscores.css("div.match-list-date").each do |date|
         game_day = date.css(".h3-wrap").text
-        todays_date = (Time.now + 60*1440).strftime("%A %d %B") 
+        todays_date = Time.now.strftime("%A %d %B") 
         if game_day == todays_date
           home = date.css(".home .t-nText").text.strip
           away = date.css(".away .t-nText").text.strip
