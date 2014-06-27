@@ -1,3 +1,21 @@
 .headercolor {
   color: #FF1493;
+  font-size: 125px;
+}
+
+.background{
+  background-color:#9966FF;
+  }
+
+.text {
+  font-family: 'Baskerville';
+  color: #3399FF;
+  font-weight: bolder;
+  font-size: 75px;
+}
+
+.bold {
+  font-size: 170px;
+  font-weight: bold;
+  color: #FF8300;
 }
