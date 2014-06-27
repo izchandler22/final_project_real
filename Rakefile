@@ -1,5 +1,5 @@
-require './texting'
-require './worldcup'
+require './lib/texting'
+require './lib/worldcup'
 require 'pry'
 
 
